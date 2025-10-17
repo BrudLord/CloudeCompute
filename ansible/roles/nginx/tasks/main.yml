@@ -1,0 +1,32 @@
+---
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: Remove default nginx site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify:
+    - Test nginx config
+    - Reload nginx
+
+- name: Deploy Nginx site for Flask
+  template:
+    src: flask.conf.j2
+    dest: /etc/nginx/sites-available/flask.conf
+    mode: "0644"
+  notify:
+    - Test nginx config
+    - Reload nginx
+
+- name: Enable site
+  file:
+    src: /etc/nginx/sites-available/flask.conf
+    dest: /etc/nginx/sites-enabled/flask.conf
+    state: link
+  notify:
+    - Test nginx config
+    - Reload nginx

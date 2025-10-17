@@ -1,0 +1,10 @@
+---
+- name: Test nginx config
+  command: nginx -t
+  register: nginx_test
+  changed_when: false
+
+- name: Reload nginx
+  service:
+    name: nginx
+    state: reloaded

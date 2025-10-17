@@ -1,0 +1,10 @@
+- name: Deploy Flask + NGINX
+  hosts: all
+  vars:
+    flask_port: 8000
+  become: yes
+
+  roles:
+    - flask_app
+    - nginx
+
